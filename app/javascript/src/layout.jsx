@@ -16,6 +16,9 @@ const Layout = (props) => {
               <li className="nav-item">
                 <a className="nav-link" href={`/user/${username}`}>{ username }</a>
               </li>
+              <li className="nav-item">
+                <a className="nav-link" href={`/my-properties`}>AirBnB Your Home!</a>
+              </li>
             </ul>
           </div>
         </div>
