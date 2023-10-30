@@ -61,15 +61,18 @@ class User extends React.Component {
           <h4 className='mb-1'>Total Bookings: {bookings.length}</h4>
           <div className='row'>
             {bookings.length > 0 
-              ? bookings.map(property => {
+              ? bookings.map(booking => {
+                const { property, start_date, end_date } = booking;
+                const { title, image_url } = property;
+                const { amount } = booking.charges[0];
 
                 return (
-                  <div key={property.id} className="col-6 col-lg-4 mb-4 booking">
+                  <div key={booking.id} className="col-6 col-lg-4 mb-4 booking">
                     <a className="text-body text-decoration-none">
-                      <div className="property-image mb-1 rounded" style={{ backgroundImage: `url(${property.property_image})` }} />
-                      <h6 className="mb-0">{property.property_title}</h6>
-                      <p className='mb-0'><small>From: {property.start_date} To: {property.end_date}</small></p>
-                      {property.is_paid || <button className='btn btn-warning' onClick={() => this.initiateStripeCheckout(property.id)}> Finish booking for ${property.charges[0].amount}0</button>}
+                      <div className="property-image mb-1 rounded" style={{ backgroundImage: `url(${image_url})` }} />
+                      <h6 className="mb-0">{title}</h6>
+                      <p className='mb-0'><small>From: {start_date} To: {end_date}</small></p>
+                      {property.is_paid || <button className='btn btn-warning' onClick={() => this.initiateStripeCheckout(booking.id)}> Finish booking for ${amount}0</button>}
                     </a>
                   </div>
                 )

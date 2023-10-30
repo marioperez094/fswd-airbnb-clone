@@ -8,6 +8,11 @@ import './my_properties.scss';
 class MyProperties extends React.Component {
   state = {
     authenticated: false,
+    username: '',
+    properties: [],
+    total_pages: null,
+    next_page: null,
+    newProperty: {}
   }
 
   componentDidMount() {
@@ -15,13 +20,29 @@ class MyProperties extends React.Component {
       .then(handleErrors)
       .then(data => {
         this.setState({
+          username: data.username,
           authenticated: data.authenticated,
+        })
+        console.log('hi')
+        this.loadProperties(data.username)
+      })
+  }
+
+  loadProperties(user) {
+    fetch(`/api/properties/${user}/user`)
+      .then(handleErrors)
+      .then(data => {
+        console.log(data)
+        this.setState({
+          properties: data.properties,
+          total_pages: data.total_pages,
+          next_page: data.next_page,
         })
       })
   }
 
   render() {
-    const { authenticated } = this.state;
+    const { authenticated, username } = this.state;
     if (!authenticated) {
       return (
         <div className="border p-4 mb-4">
@@ -31,8 +52,8 @@ class MyProperties extends React.Component {
     };
 
     return (
-      <Layout>
-        Hi
+      <Layout username={username} >
+
       </Layout>
     )
   }

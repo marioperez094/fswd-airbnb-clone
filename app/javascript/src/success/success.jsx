@@ -42,9 +42,8 @@ class Success extends React.Component {
       id,
       start_date,
       end_date,
-      property_title,
-      property_image,
-      charges
+      property,
+      charge
     } = bookings;
 
     return (
