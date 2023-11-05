@@ -62,17 +62,17 @@ class User extends React.Component {
           <div className='row'>
             {bookings.length > 0 
               ? bookings.map(booking => {
-                const { property, start_date, end_date } = booking;
-                const { title, image_url } = property;
+                const { property, start_date, end_date, is_paid } = booking;
+                const { title, image } = property;
                 const { amount } = booking.charges[0];
 
                 return (
                   <div key={booking.id} className="col-6 col-lg-4 mb-4 booking">
                     <a className="text-body text-decoration-none">
-                      <div className="property-image mb-1 rounded" style={{ backgroundImage: `url(${image_url})` }} />
+                      <div className="property-image mb-1 rounded" style={{ backgroundImage: `url(${image})` }} />
                       <h6 className="mb-0">{title}</h6>
                       <p className='mb-0'><small>From: {start_date} To: {end_date}</small></p>
-                      {property.is_paid || <button className='btn btn-warning' onClick={() => this.initiateStripeCheckout(booking.id)}> Finish booking for ${amount}0</button>}
+                      { !is_paid && <button className='btn btn-warning' onClick={() => this.initiateStripeCheckout(booking.id)}> Finish booking for ${amount}0</button>}
                     </a>
                   </div>
                 )

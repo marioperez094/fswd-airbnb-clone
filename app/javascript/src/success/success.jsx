@@ -8,7 +8,8 @@ import './success.scss';
 class Success extends React.Component {
   state = {
     username: '',
-    bookings: {},
+    booking: {},
+    property: {},
     loading: false,
   }
 
@@ -16,9 +17,10 @@ class Success extends React.Component {
     fetch(`/api/bookings/${this.props.booking_id}`)
       .then(handleErrors)
       .then(data => {
-        console.log(data.booking)
+        console.log(data)
         this.setState({
-          bookings: data.booking,
+          booking: data.booking,
+          property: data.booking.property,
           loading: false,
         })
       })
@@ -33,7 +35,7 @@ class Success extends React.Component {
   }
 
   render() {
-    const { loading, bookings, username } = this.state;
+    const { loading, booking, property, username } = this.state;
     if (loading) {
       return <p>loading...</p>;
     };
@@ -42,25 +44,34 @@ class Success extends React.Component {
       id,
       start_date,
       end_date,
-      property,
-      charge
-    } = bookings;
+      charge,
+    } = booking;
+
+    const {
+      title,
+      image
+    } = property;
+
+    console.log(property)
 
     return (
       <Layout username={username}>
-        <div className='container pt-4'>
-          <h4 className='mb-1 text-center'>Payment Processing</h4>
-          <div className='row'>
-            <div className='col-12 success'>
-              <div className='property-image mb-1 rounded' style={{ backgroundImage: `url(${property_image})`}} />
-              <h2 className='mb-0'>{property_title}</h2>
-              <p className='mb-0'><small>From: {start_date} To: {end_date}</small></p>
+        {booking &&
+          <div className='container pt-4'>
+            <h4 className='mb-1 text-center'>Payment Processing</h4>
+            <div className='row'>
+              <div className='col-12 success'>
+                <div className='property-image mb-1 rounded' style={{ backgroundImage: `url(${image})` }} />
+                <h2 className='mb-0'>{title}</h2>
+                <p className='mb-0'><small>From: {start_date} To: {end_date}</small></p>
+              </div>
             </div>
           </div>
-        </div>
+        }
       </Layout>
     )
   }
 }
+
 
 export default Success;
