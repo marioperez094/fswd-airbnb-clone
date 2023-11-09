@@ -2,9 +2,11 @@
 import React from 'react';
 import Layout from '@src/layout';
 import BookingWidget from './bookingWidget';
+import Loader from '../loading';
 import { handleErrors } from '@utils/fetchHelper';
 
 import './property.scss';
+import ImageSlider from './imageSlider';
 
 class Property extends React.Component {
   state = {
@@ -17,6 +19,7 @@ class Property extends React.Component {
     fetch(`/api/properties/${this.props.property_id}`)
       .then(handleErrors)
       .then(data => {
+        console.log(data)
         this.setState({
           property: data.property,
           loading: false,
@@ -36,7 +39,11 @@ class Property extends React.Component {
   render() {
     const { username, property, loading } = this.state;
     if (loading) {
-      return <p>loading...</p>;
+      return (
+        <div className='text-center'>
+          <Loader />
+        </div>
+      );
     };
 
     const {
@@ -51,13 +58,12 @@ class Property extends React.Component {
       bedrooms,
       beds,
       baths,
-      image,
       user,
     } = property
 
     return (
       <Layout username={username}>
-        <div className="property-image mb-3" style={{ backgroundImage: `url(${image})` }} />
+        <ImageSlider images={property.images} />
         <div className="container">
           <div className="row">
             <div className="info col-12 col-lg-7">

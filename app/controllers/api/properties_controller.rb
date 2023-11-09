@@ -9,7 +9,7 @@ module Api
       return render json: { error: 'cannot find user' }, status: :not_found if !user
       
       begin
-        @property = user.properties.create(property_params)
+        @property = user.properties.create!(property_params)
         render 'api/properties/create', status: :created
       rescue ArgumentError => e
         render json: { error: e.message }, status: :bad_request
@@ -42,7 +42,7 @@ module Api
     private
 
     def property_params
-      params.require(:property).permit(:title, :description, :city, :country, :property_type, :price_per_night, :max_guests, :bedrooms, :beds, :baths, :user_id, :image)
+      params.require(:property).permit(:title, :description, :city, :country, :property_type, :price_per_night, :max_guests, :bedrooms, :beds, :baths, :user_id, images: [])
     end
   end
 end

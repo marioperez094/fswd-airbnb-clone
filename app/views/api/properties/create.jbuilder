@@ -5,7 +5,11 @@ json.property do
   json.country @property.country
   json.property_type @property.property_type
   json.price_per_night @property.price_per_night
-  json.image url_for(@property.image) if @property.image.attached?
+  json.images do
+    json.array! @property.images do |image|
+      json.image_url url_for(image)
+    end
+  end
 
   json.user do 
     json.id @property.user.id
