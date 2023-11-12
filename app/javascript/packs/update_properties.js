@@ -1,0 +1,1 @@
+import '@src/update_properties'

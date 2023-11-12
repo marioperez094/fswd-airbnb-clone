@@ -25,4 +25,10 @@ class StaticPagesController < ApplicationController
   def myProperties
     render 'my_properties'
   end
+
+  def update_properties
+    @data = { property_id: params[:id] }.to_json
+    render 'update_properties'
+  end
+
 end

@@ -3,9 +3,9 @@ module Api
     skip_before_action :verify_authenticity_token, only: [:mark_complete]
     
     def create
-      token = cookies.signed[:airbnb_session_token]
-      session = Session.find_by(token: token)
-      return render json: { error: 'user not logged in' }, status: :unauthorized if !session
+      if !current_user
+        return render json: { error: 'user not logged in' }, status: :unauthorized
+      end
 
       booking = Booking.find_by(id: params[:booking_id])
       return render json: { error: 'cannot find booking' }, status: :not_found if !booking

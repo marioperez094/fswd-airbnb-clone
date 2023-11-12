@@ -4,5 +4,28 @@
     /* aspect ratio 3:2 */
     background-size: cover;
     background-position: center;
+
+    div {
+      background-color: rgba(255, 255, 255, 0.6);
+      width: 100%;
+    }
   }
+}
+
+.listing-owner {
+  margin-top: 20px !important;
+}
+
+.listing-owner:first-of-type {
+  margin-top: 0px !important;
+}
+
+.user-icon {
+  background-color: gray;
+  color: white !important;
+  border-color: black;
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  border-radius: 30px;
 }

@@ -1,11 +1,11 @@
 module Api
   class PropertiesController < ApplicationController
     def create
-      token = cookies.signed[:airbnb_session_token]
-      session = Session.find_by(token: token)
-      return render json: { error: 'user not logged in' }, status: :unauthorized if !session
+      if !current_user
+        return render json: { error: 'user not logged in' }, status: :unauthorized if !session
+      end
 
-      user = session.user
+      user = current_user
       return render json: { error: 'cannot find user' }, status: :not_found if !user
       
       begin
@@ -33,10 +33,44 @@ module Api
     end
 
     def show
-      @property = Property.find_by(id: params[:id])
-      return render json: { error: 'not_found' }, status: :not_found if !@property
+      find_property
 
       render 'api/properties/show', status: :ok
+    end
+
+    def update
+      find_property
+
+      begin 
+        @property.update(property_params)
+        render 'api/properties/create', status: :ok
+      rescue ArgumentError => e
+        render json: { error: e.message }, status: :bad_request
+      end
+    end
+
+    def find_property
+      @property = Property.find_by(id: params[:id])
+      return render json: { error: 'not_found' }, status: :not_found if !@property
+    end
+
+    def destroy
+      if !current_user
+        return render json: { success: false } unless current_user
+      end
+
+      user = current_user
+      property = Property.find_by(id: params[:id])
+
+      if property && (property.user == user) && property.destroy
+        render json: {
+          success: true
+        }
+      else 
+        render json: {
+          success: false
+        }
+      end
     end
 
     private

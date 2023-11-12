@@ -1,6 +1,7 @@
 // property.jsx
 import React from 'react';
 import Layout from '@src/layout';
+import Loader from '../loading'
 import { safeCredentials, handleErrors } from '@utils/fetchHelper';
 
 import './user.scss';
@@ -52,7 +53,11 @@ class User extends React.Component {
   render() {
     const { username, bookings, loading } = this.state;
     if (loading) {
-      return <p>loading...</p>;
+      return (
+        <div className='text-center'>
+          <Loader />
+        </div>
+      );
     };
 
     return (

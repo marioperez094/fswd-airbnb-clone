@@ -17,11 +17,9 @@ module Api
     end
 
     def authenticated
-      token = cookies.signed[:airbnb_session_token]
-      session = Session.find_by(token: token)
 
-      if session
-        @user = session.user
+      if current_user
+        @user = current_user
         render 'api/sessions/authenticated', status: :ok
       else
         render json: { authenticated: false }, status: :bad_request
@@ -29,10 +27,8 @@ module Api
     end
 
     def destroy
-      token = cookies.signed[:airbnb_session_token]
-      session = Session.find_by(token: token)
 
-      if session and session.destroy
+      if current_user and session.destroy
         render json: { success: true }, status: :ok
       end
     end

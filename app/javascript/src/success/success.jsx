@@ -4,6 +4,7 @@ import Layout from '@src/layout';
 import { safeCredentials, handleErrors } from '@utils/fetchHelper';
 
 import './success.scss';
+import Loader from '../loading';
 
 class Success extends React.Component {
   state = {
@@ -20,7 +21,6 @@ class Success extends React.Component {
         console.log(data)
         this.setState({
           booking: data.booking,
-          property: data.booking.property,
           loading: false,
         })
       })
@@ -35,35 +35,34 @@ class Success extends React.Component {
   }
 
   render() {
-    const { loading, booking, property, username } = this.state;
+    const { username, booking, loading } = this.state;
     if (loading) {
-      return <p>loading...</p>;
+      return (
+        <div className='text-center'>
+          <Loader />
+        </div>
+      );
     };
 
     const {
-      id,
       start_date,
       end_date,
-      charge,
+      property
     } = booking;
 
-    const {
-      title,
-      image
-    } = property;
 
     console.log(property)
 
     return (
       <Layout username={username}>
-        {booking &&
+        {Object.keys(booking).length > 0 &&
           <div className='container pt-4'>
             <h4 className='mb-1 text-center'>Payment Processing</h4>
             <div className='row'>
               <div className='col-12 success'>
-                <div className='property-image mb-1 rounded' style={{ backgroundImage: `url(${image})` }} />
-                <h2 className='mb-0'>{title}</h2>
-                <p className='mb-0'><small>From: {start_date} To: {end_date}</small></p>
+                <div className='property-image mb-1 rounded' style={{ backgroundImage: `url(${property.images[0].image_url})` }} />
+                <h2 className='mb-0 text-center'>{property.title}</h2>
+                <p className='mb-0 text-center'><small>From: {start_date} To: {end_date}</small></p>
               </div>
             </div>
           </div>
